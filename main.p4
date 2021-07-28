@@ -290,7 +290,7 @@ register rR6 {
 }
 
 
-table spread_action_3 {
+table drop_table3 {
     actions {
         aiNoOp;
     }
@@ -330,6 +330,14 @@ table drop_table1 {
     size : 128;
 }
 
+table drop_table2 {
+    actions {
+        aiNoOp;
+    }
+    default_action: _drop();
+    size : 128;
+}
+
 action _drop() {
     drop();
 }
@@ -356,7 +364,7 @@ control ingress {
 	    apply(UDP_flood_action_2);
 	}
 	else{
-	    apply(spread_action_3);
+	    apply(drop_table2);
 	
 	}
 	if(sfkeyinfo.rR4>10000){
@@ -373,7 +381,7 @@ control ingress {
 	      apply(drop_table1);  
 	}
 	if(sfkeyinfo.rR6>10000){
-	      apply(spread_action_3)；
+	      apply(drop_table3)；
 	}
 	else{
 	      apply(ipv4_lpm2);  
