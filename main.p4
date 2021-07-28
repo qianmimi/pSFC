@@ -375,19 +375,18 @@ control ingress {
 	}
 	else{
 	       apply(spread_action_1);
-	    }
-	
+	}
 	if(sfkeyinfo.rR5>10000){
 	      apply(spread_action_2)；
 	}
 	else{
-	      apply(drop_table1);  
+	      apply(drop_table1);
 	}
 	if(sfkeyinfo.rR6>10000){
 	      apply(drop_table3)；
 	}
 	else{
-	      apply(ipv4_lpm2);  
+	      apply(ipv4_lpm2);
 	}
 	
 }
