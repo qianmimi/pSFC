@@ -11,12 +11,12 @@ header_type sfkeyinfo_t {
     fields {
         hashVal5: width_vlan;
         hashVal2: width_vlan;
-        rR1 : width_vlan;
-        rR2 : width_vlan;
-	rR3 : width_vlan;
-        rR4 : width_vlan;
-	rR5 : width_vlan;
-        rR6 : width_vlan;
+        srR1 : width_vlan;
+        srR2 : width_vlan;
+	srR3 : width_vlan;
+        srR4 : width_vlan;
+	srR5 : width_vlan;
+        srR6 : width_vlan;
     }
 }
 
@@ -157,7 +157,7 @@ action aflowsize_1() {
 blackbox stateful_alu rwR1 {
     reg : rR1;
     update_lo_1_value : register_lo + 1;
-    output_dst : sfkeyinfo.rR1;
+    output_dst : sfkeyinfo.srR1;
     output_value : register_lo;
 }
 
@@ -181,7 +181,7 @@ action aflowsize_2() {
 blackbox stateful_alu rwR2 {
     reg : rR2;
     update_lo_1_value : register_lo + 1;
-    output_dst : sfkeyinfo.rR2;
+    output_dst : sfkeyinfo.srR2;
     output_value : register_lo;
 }
 
@@ -200,13 +200,13 @@ table UDP_flood_action_1 {
 }
 
 action aflowsize_3() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
+    rwR3.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR3 {
     reg : rR3;
     update_lo_1_value : register_lo + 1;
-    output_dst : sfkeyinfo.rR1;
+    output_dst : sfkeyinfo.srR3;
     output_value : register_lo;
 }
 
@@ -234,13 +234,13 @@ table UDP_flood_action_2 {
 }
 
 action aflowsize_4() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
+    rwR4.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR4 {
     reg : rR4;
     update_lo_1_value : register_lo + 1;
-    output_dst : sfkeyinfo.rR4;
+    output_dst : sfkeyinfo.srR4;
     output_value : register_lo;
 }
 
@@ -267,13 +267,13 @@ table spread_action_1 {
 }
 
 action aflowsize_5() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
+    rwR5.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR5 {
     reg : rR5;
     update_lo_1_value : register_lo + 1;
-    output_dst : sfkeyinfo.rR5;
+    output_dst : sfkeyinfo.srR5;
     output_value : register_lo;
 }
 
@@ -300,13 +300,13 @@ table spread_action_2 {
 }
 
 action aflowsize_6() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
+    rwR6.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR6 {
     reg : rR6;
     update_lo_1_value : register_lo + 1;
-    output_dst : sfkeyinfo.rR6;
+    output_dst : sfkeyinfo.srR6;
     output_value : register_lo;
 }
 
@@ -357,7 +357,7 @@ control ingress {
 	apply(sflow_ing_take_sample);
 	apply(hash_5tuple);
 	apply(flow_size_action_1);
-	if(sfkeyinfo.rR1>100){
+	if(sfkeyinfo.srR1>100){
 	    apply(flow_size_action_2);
 	}
 	else{
@@ -365,26 +365,26 @@ control ingress {
 	
 	}
 	apply(UDP_flood_action_1);
-	if(sfkeyinfo.rR3>100){
+	if(sfkeyinfo.srR3>100){
 	    apply(UDP_flood_action_2);
 	}
 	else{
 	    apply(drop_table2);
 	
 	}
-	if(sfkeyinfo.rR4>100){
+	if(sfkeyinfo.srR4>100){
 	    	apply(drop_table);
 	}
 	else{
 	       apply(spread_action_1);
 	}
-	if(sfkeyinfo.rR5>100){
+	if(sfkeyinfo.srR5>100){
 	      apply(spread_action_2);
 	}
 	else{
 	      apply(drop_table1);
 	}
-	if(sfkeyinfo.rR6>100){
+	if(sfkeyinfo.srR6>100){
 	      apply(drop_table3);
 	}
 	else{
