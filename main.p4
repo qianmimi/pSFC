@@ -5,16 +5,18 @@
 #include "tofino/stateful_alu_blackbox.p4"
 
 
+#define width 8
+
 header_type sfkeyinfo_t {
     fields {
-        hashVal5: 16;
-        hashVal2: 16;
-        rR1 : 16;
-        rR2 : 16;
-	rR3 : 16;
-        rR4 : 16;
-	rR5 : 16;
-        rR6 : 16;
+        hashVal5: width;
+        hashVal2: width;
+        rR1 : width;
+        rR2 : width;
+	rR3 : width;
+        rR4 : width;
+	rR5 : width;
+        rR6 : width;
     }
 }
 
@@ -31,7 +33,7 @@ field_list flKeyFields_5 {
 field_list_calculation flowKeyHashCalc5 {
     input { flKeyFields_5; }
     algorithm : crc16;
-    output_width : 16;
+    output_width : width;
 }
 
 field_list flKeyFields_2 {
@@ -42,7 +44,7 @@ field_list flKeyFields_2 {
 field_list_calculation flowKeyHashCalc2 {
     input { flKeyFields_2; }
     algorithm : crc16;
-    output_width : 16;
+    output_width : width;
 }
 @pragma stage 1
 table ACL_table1 {
@@ -124,7 +126,7 @@ table hash_5tuple {
 }
 
 action calchash5() {  
-    modify_field_with_hash_based_offset(sfkeyinfo.hashVal5, 0, flowKeyHashCalc5, 65536);
+    modify_field_with_hash_based_offset(sfkeyinfo.hashVal5, 0, flowKeyHashCalc5, 256);
 }
 @pragma stage 6
 table hash_2tuple {
@@ -136,7 +138,7 @@ table hash_2tuple {
 }
 
 action calchash2() {  
-    modify_field_with_hash_based_offset(sfkeyinfo.hashVal2, 0, flowKeyHashCalc2, 65536);
+    modify_field_with_hash_based_offset(sfkeyinfo.hashVal2, 0, flowKeyHashCalc2, 256);
 }
 
 @pragma stage 5
@@ -160,7 +162,7 @@ blackbox stateful_alu rwR1 {
 }
 
 register rR1 {
-    width : 16;
+    width : width;
     instance_count : 16384;
 }
 @pragma stage 6
@@ -184,7 +186,7 @@ blackbox stateful_alu rwR2 {
 }
 
 register rR2 {
-    width : 16;
+    width : width;
     instance_count : 16384;
 }
 
@@ -209,7 +211,7 @@ blackbox stateful_alu rwR3 {
 }
 
 register rR3 {
-    width : 16;
+    width : width;
     instance_count : 16384;
 }
 
@@ -243,7 +245,7 @@ blackbox stateful_alu rwR4 {
 }
 
 register rR4 {
-    width : 16;
+    width : width;
     instance_count : 16384;
 }
 @pragma stage 9
@@ -276,7 +278,7 @@ blackbox stateful_alu rwR5 {
 }
 
 register rR5 {
-    width : 16;
+    width : width;
     instance_count : 16384;
 }
 @pragma stage 10
@@ -309,7 +311,7 @@ blackbox stateful_alu rwR6 {
 }
 
 register rR6 {
-    width : 16;
+    width : width;
     instance_count : 16384;
 }
 
@@ -355,7 +357,7 @@ control ingress {
 	apply(sflow_ing_take_sample);
 	apply(hash_5tuple);
 	apply(flow_size_action_1);
-	if(sfkeyinfo.rR1>10000){
+	if(sfkeyinfo.rR1>100){
 	    apply(flow_size_action_2);
 	}
 	else{
@@ -363,26 +365,26 @@ control ingress {
 	
 	}
 	apply(UDP_flood_action_1);
-	if(sfkeyinfo.rR3>10000){
+	if(sfkeyinfo.rR3>100){
 	    apply(UDP_flood_action_2);
 	}
 	else{
 	    apply(drop_table2);
 	
 	}
-	if(sfkeyinfo.rR4>10000){
+	if(sfkeyinfo.rR4>100){
 	    	apply(drop_table);
 	}
 	else{
 	       apply(spread_action_1);
 	}
-	if(sfkeyinfo.rR5>10000){
+	if(sfkeyinfo.rR5>100){
 	      apply(spread_action_2);
 	}
 	else{
 	      apply(drop_table1);
 	}
-	if(sfkeyinfo.rR6>10000){
+	if(sfkeyinfo.rR6>100){
 	      apply(drop_table3);
 	}
 	else{
