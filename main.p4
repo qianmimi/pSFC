@@ -149,7 +149,7 @@ table flow_size_action_1 {
 }
 
 action aflowsize_1() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal);
+    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR1 {
@@ -173,7 +173,7 @@ table flow_size_action_2 {
 }
 
 action aflowsize_2() {  
-    rwR2.execute_stateful_alu(sfkeyinfo.hashVal);
+    rwR2.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR2 {
@@ -198,7 +198,7 @@ table UDP_flood_action_1 {
 }
 
 action aflowsize_3() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal);
+    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR3 {
@@ -232,7 +232,7 @@ table UDP_flood_action_2 {
 }
 
 action aflowsize_4() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal);
+    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR4 {
@@ -265,7 +265,7 @@ table spread_action_1 {
 }
 
 action aflowsize_5() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal);
+    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR5 {
@@ -298,7 +298,7 @@ table spread_action_2 {
 }
 
 action aflowsize_6() {  
-    rwR1.execute_stateful_alu(sfkeyinfo.hashVal);
+    rwR1.execute_stateful_alu(sfkeyinfo.hashVal5);
 }
 
 blackbox stateful_alu rwR6 {
