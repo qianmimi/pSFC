@@ -55,7 +55,7 @@ table ACL_table1 {
     actions {
         aiNoOp;
     }
-    default_action: drop();
+    default_action: _drop();
     size : 128;
 }
 @pragma stage 2
@@ -69,7 +69,7 @@ table ACL_table2 {
     actions {
         aiNoOp;
     }
-    default_action: drop();
+    default_action: _drop();
     size : 128;
 }
 @pragma stage 3
@@ -83,7 +83,7 @@ table ACL_table3 {
     actions {
         aiNoOp;
     }
-    default_action: drop();
+    default_action: _drop();
     size : 128;
 }
 @pragma stage 4
@@ -97,7 +97,7 @@ table sflow_ingress {
     actions {
         aiNoOp;
     }
-    default_action: drop();
+    default_action: _drop();
     size : 128;
 }
 @pragma stage 5
@@ -111,7 +111,7 @@ table sflow_ing_take_sample {
     actions {
         aiNoOp;
     }
-    default_action: drop();
+    default_action: _drop();
     size : 128;
 }
 @pragma stage 5
