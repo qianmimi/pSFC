@@ -10,7 +10,11 @@ header_type sfkeyinfo_t {
         hashVal5: 16;
         hashVal2: 16;
         rR1 : 16;
-        rR2 :16;
+        rR2 : 16;
+	rR3 : 16;
+        rR4 : 16;
+	rR5 : 16;
+        rR6 : 16;
     }
 }
 
@@ -310,8 +314,21 @@ table ipv4_lpm2{
     default_action : aiNoOp();
 }
 
+table drop_table {
+    actions {
+        aiNoOp;
+    }
+    default_action: _drop();
+    size : 128;
+}
 
-
+table drop_table1 {
+    actions {
+        aiNoOp;
+    }
+    default_action: _drop();
+    size : 128;
+}
 
 action _drop() {
     drop();
@@ -320,8 +337,48 @@ action aiNoOp() {
     no_op();
 }
 control ingress {
- 
-  
+ 	apply(ACL_table1);
+	apply(ACL_table2);
+	apply(ACL_table3);
+	apply(sflow_ingress);
+	apply(sflow_ing_take_sample);
+	apply(hash_5tuple);
+	apply(flow_size_action_1);
+	if(sfkeyinfo.rR1>10000){
+	    apply(flow_size_action_2);
+	}
+	else{
+	    apply(hash_2tuple);
+	
+	}
+	apply(UDP_flood_action_1);
+	if(sfkeyinfo.rR3>10000){
+	    apply(UDP_flood_action_2);
+	}
+	else{
+	    apply(spread_action_3);
+	
+	}
+	if(sfkeyinfo.rR4>10000){
+	    	apply(drop_table);
+	}
+	else{
+	       apply(spread_action_1);
+	    }
+	
+	if(sfkeyinfo.rR5>10000){
+	      apply(spread_action_2)；
+	}
+	else{
+	      apply(drop_table1);  
+	}
+	if(sfkeyinfo.rR6>10000){
+	      apply(spread_action_3)；
+	}
+	else{
+	      apply(ipv4_lpm2);  
+	}
+	
 }
 
 control egress {
