@@ -44,7 +44,7 @@ field_list_calculation flowKeyHashCalc2 {
     algorithm : crc16;
     output_width : 16;
 }
-
+@pragma stage 1
 table ACL_table1 {
     reads {
         ipv4.srcAddr : ternary;
@@ -58,6 +58,7 @@ table ACL_table1 {
     default_action: drop();
     size : 128;
 }
+@pragma stage 2
 table ACL_table2 {
     reads {
         ipv4.srcAddr : ternary;
@@ -71,6 +72,7 @@ table ACL_table2 {
     default_action: drop();
     size : 128;
 }
+@pragma stage 3
 table ACL_table3 {
     reads {
         ipv4.srcAddr : ternary;
@@ -84,7 +86,7 @@ table ACL_table3 {
     default_action: drop();
     size : 128;
 }
-
+@pragma stage 4
 table sflow_ingress {
     reads {
         ipv4.srcAddr : ternary;
@@ -98,7 +100,7 @@ table sflow_ingress {
     default_action: drop();
     size : 128;
 }
-
+@pragma stage 5
 table sflow_ing_take_sample {
     reads {
         ipv4.srcAddr : ternary;
@@ -112,7 +114,7 @@ table sflow_ing_take_sample {
     default_action: drop();
     size : 128;
 }
-
+@pragma stage 5
 table hash_5tuple {
     actions {
         calchash5;
@@ -124,7 +126,7 @@ table hash_5tuple {
 action calchash5() {  
     modify_field_with_hash_based_offset(sfkeyinfo.hashVal5, 0, flowKeyHashCalc5, 65536);
 }
-
+@pragma stage 6
 table hash_2tuple {
     actions {
         calchash2;
@@ -137,7 +139,7 @@ action calchash2() {
     modify_field_with_hash_based_offset(sfkeyinfo.hashVal2, 0, flowKeyHashCalc2, 65536);
 }
 
-
+@pragma stage 5
 table flow_size_action_1 {
     actions {
         aflowsize_1;
@@ -161,7 +163,7 @@ register rR1 {
     width : 16;
     instance_count : 16384;
 }
-
+@pragma stage 6
 table flow_size_action_2 {
     actions {
         aflowsize_2;
@@ -186,7 +188,7 @@ register rR2 {
     instance_count : 16384;
 }
 
-
+@pragma stage 7
 table UDP_flood_action_1 {
     actions {
         aflowsize_3;
@@ -211,8 +213,16 @@ register rR3 {
     instance_count : 16384;
 }
 
+@pragma stage 8
+table drop_table2 {
+    actions {
+        aiNoOp;
+    }
+    default_action: _drop();
+    size : 128;
+}
 
-
+@pragma stage 8
 table UDP_flood_action_2 {
     actions {
         aflowsize_4;
@@ -236,9 +246,16 @@ register rR4 {
     width : 16;
     instance_count : 16384;
 }
+@pragma stage 9
+table drop_table {
+    actions {
+        aiNoOp;
+    }
+    default_action: _drop();
+    size : 128;
+}
 
-
-
+@pragma stage 9
 table spread_action_1 {
     actions {
         aflowsize_5;
@@ -262,9 +279,16 @@ register rR5 {
     width : 16;
     instance_count : 16384;
 }
+@pragma stage 10
+table drop_table1 {
+    actions {
+        aiNoOp;
+    }
+    default_action: _drop();
+    size : 128;
+}
 
-
-
+@pragma stage 10
 table spread_action_2 {
     actions {
         aflowsize_6;
@@ -289,7 +313,7 @@ register rR6 {
     instance_count : 16384;
 }
 
-
+@pragma stage 11
 table drop_table3 {
     actions {
         aiNoOp;
@@ -301,7 +325,7 @@ table drop_table3 {
 action set_egr(egress_spec) {
     modify_field(ig_intr_md_for_tm.ucast_egress_port,egress_spec); 
 }
-
+@pragma stage 11
 table ipv4_lpm2{
     reads {
 		    ipv4.dstAddr : ternary;
@@ -314,29 +338,8 @@ table ipv4_lpm2{
     default_action : aiNoOp();
 }
 
-table drop_table {
-    actions {
-        aiNoOp;
-    }
-    default_action: _drop();
-    size : 128;
-}
 
-table drop_table1 {
-    actions {
-        aiNoOp;
-    }
-    default_action: _drop();
-    size : 128;
-}
 
-table drop_table2 {
-    actions {
-        aiNoOp;
-    }
-    default_action: _drop();
-    size : 128;
-}
 
 action _drop() {
     drop();
