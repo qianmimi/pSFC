@@ -5,18 +5,18 @@
 #include "tofino/stateful_alu_blackbox.p4"
 
 
-#define width 8
+#define width_vlan 8
 
 header_type sfkeyinfo_t {
     fields {
-        hashVal5: width;
-        hashVal2: width;
-        rR1 : width;
-        rR2 : width;
-	rR3 : width;
-        rR4 : width;
-	rR5 : width;
-        rR6 : width;
+        hashVal5: width_vlan;
+        hashVal2: width_vlan;
+        rR1 : width_vlan;
+        rR2 : width_vlan;
+	rR3 : width_vlan;
+        rR4 : width_vlan;
+	rR5 : width_vlan;
+        rR6 : width_vlan;
     }
 }
 
@@ -33,7 +33,7 @@ field_list flKeyFields_5 {
 field_list_calculation flowKeyHashCalc5 {
     input { flKeyFields_5; }
     algorithm : crc16;
-    output_width : width;
+    output_width : width_vlan;
 }
 
 field_list flKeyFields_2 {
@@ -44,7 +44,7 @@ field_list flKeyFields_2 {
 field_list_calculation flowKeyHashCalc2 {
     input { flKeyFields_2; }
     algorithm : crc16;
-    output_width : width;
+    output_width : width_vlan;
 }
 @pragma stage 1
 table ACL_table1 {
@@ -162,7 +162,7 @@ blackbox stateful_alu rwR1 {
 }
 
 register rR1 {
-    width : width;
+    width : width_vlan;
     instance_count : 16384;
 }
 @pragma stage 6
@@ -186,7 +186,7 @@ blackbox stateful_alu rwR2 {
 }
 
 register rR2 {
-    width : width;
+    width : width_vlan;
     instance_count : 16384;
 }
 
@@ -211,7 +211,7 @@ blackbox stateful_alu rwR3 {
 }
 
 register rR3 {
-    width : width;
+    width : width_vlan;
     instance_count : 16384;
 }
 
@@ -245,7 +245,7 @@ blackbox stateful_alu rwR4 {
 }
 
 register rR4 {
-    width : width;
+    width : width_vlan;
     instance_count : 16384;
 }
 @pragma stage 9
@@ -278,7 +278,7 @@ blackbox stateful_alu rwR5 {
 }
 
 register rR5 {
-    width : width;
+    width : width_vlan;
     instance_count : 16384;
 }
 @pragma stage 10
@@ -311,7 +311,7 @@ blackbox stateful_alu rwR6 {
 }
 
 register rR6 {
-    width : width;
+    width : width_vlan;
     instance_count : 16384;
 }
 
