@@ -57,7 +57,7 @@ table ACL_table1 {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 @pragma stage 1
@@ -71,7 +71,7 @@ table ACL_table2 {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 @pragma stage 2
@@ -85,7 +85,7 @@ table ACL_table3 {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 @pragma stage 3
@@ -99,7 +99,7 @@ table sflow_ingress {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 @pragma stage 4
@@ -113,7 +113,7 @@ table sflow_ing_take_sample {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 @pragma stage 4
@@ -220,7 +220,7 @@ table drop_table2 {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 
@@ -253,7 +253,7 @@ table drop_table {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 
@@ -286,7 +286,7 @@ table drop_table1 {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 
@@ -320,7 +320,7 @@ table drop_table3 {
     actions {
         aiNoOp;
     }
-    default_action: _drop();
+    default_action: aiNoOp();
     size : 128;
 }
 
@@ -330,8 +330,8 @@ action set_egr(egress_spec) {
 @pragma stage 11
 table ipv4_lpm2{
     reads {
-		    ipv4.dstAddr : ternary;
-		    ethernet.etherType : ternary;
+		    ipv4.dstAddr : exact;
+		    ethernet.etherType : exact;
     }
     actions {
         set_egr;
