@@ -46,7 +46,7 @@ field_list_calculation flowKeyHashCalc2 {
     algorithm : crc16;
     output_width : width_vlan;
 }
-@pragma stage 1
+@pragma stage 0
 table ACL_table1 {
     reads {
         ipv4.srcAddr : ternary;
@@ -60,7 +60,7 @@ table ACL_table1 {
     default_action: _drop();
     size : 128;
 }
-@pragma stage 2
+@pragma stage 1
 table ACL_table2 {
     reads {
         ipv4.srcAddr : ternary;
@@ -74,7 +74,7 @@ table ACL_table2 {
     default_action: _drop();
     size : 128;
 }
-@pragma stage 3
+@pragma stage 2
 table ACL_table3 {
     reads {
         ipv4.srcAddr : ternary;
@@ -88,7 +88,7 @@ table ACL_table3 {
     default_action: _drop();
     size : 128;
 }
-@pragma stage 4
+@pragma stage 3
 table sflow_ingress {
     reads {
         ipv4.srcAddr : ternary;
@@ -102,7 +102,7 @@ table sflow_ingress {
     default_action: _drop();
     size : 128;
 }
-@pragma stage 5
+@pragma stage 4
 table sflow_ing_take_sample {
     reads {
         ipv4.srcAddr : ternary;
@@ -116,7 +116,7 @@ table sflow_ing_take_sample {
     default_action: _drop();
     size : 128;
 }
-@pragma stage 5
+@pragma stage 4
 table hash_5tuple {
     actions {
         calchash5;
